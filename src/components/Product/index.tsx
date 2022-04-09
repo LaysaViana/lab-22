@@ -16,7 +16,7 @@ const Product = ({ id, name, price, picture, quantity }: ProductProps) => (
     <Info>
       <Column>
         <Text>{name}</Text>
-        <Text>{price}</Text>
+        <Text>{price.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</Text>
       </Column>
 
       <WrapperIncrementor>
