@@ -1,3 +1,4 @@
+import { useCartContext } from "../../contexts/CartContext";
 import Incrementor from "../Incrementor";
 import { Wrapper, Info, Column, Text, WrapperIncrementor } from "./styles";
 
@@ -6,23 +7,33 @@ export type ProductProps = {
   name: string;
   price: number;
   picture: string;
+  quantity: number;
 };
 
-const Product = ({ id, name, price, picture }: ProductProps) => (
-  <Wrapper>
-    <img src={picture} alt={`Imagem de referência ${name}`} />
+const Product = ({ id, name, price, picture, quantity }: ProductProps) => {
+  const context = useCartContext();
+  let quantidadeAtual = 0
 
-    <Info>
-      <Column>
-        <Text>{name}</Text>
-        <Text>{price}</Text>
-      </Column>
+  const indiceExistente = context.itensDeVenda.findIndex(item => item.produto.id === id);
+  if (indiceExistente > -1){
+    quantidadeAtual = context.itensDeVenda[indiceExistente].quantidade;
+  }
+    return (
+      <Wrapper>
+        <img src={picture} alt={`Imagem de referência ${name}`} />
 
-      <WrapperIncrementor>
-        <Incrementor id={id} quantity={1} />
-      </WrapperIncrementor>
-    </Info>
-  </Wrapper>
-);
+        <Info>
+          <Column>
+            <Text>{name}</Text>
+            <Text>{price.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}</Text>
+          </Column>
+
+          <WrapperIncrementor>
+            <Incrementor id={id} quantidadeItensCarrinho={quantidadeAtual} quantidadeEstoque={quantity} />
+          </WrapperIncrementor>
+        </Info>
+      </Wrapper>
+    )
+};
 
 export default Product;
