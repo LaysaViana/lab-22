@@ -6,15 +6,17 @@ import { theme } from "./styles/theme";
 //import CartProvider from './src/contexts/CartContext';
 
 import Home from "./pages/home";
+import { CartContext, CartContextProvider } from "./contexts/CartContext";
 
 const App = () => {
   return (
-    // <CartProvider>
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <Home />
-    </ThemeProvider>
-    // </CartProvider>
+    <CartContextProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Home />
+      </ThemeProvider>
+    </CartContextProvider>
+
   );
 };
 
