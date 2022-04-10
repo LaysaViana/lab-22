@@ -1,40 +1,32 @@
 import { Plus as PlusIcon } from "@styled-icons/boxicons-regular/Plus";
 import { Subtract as SubtractIcon } from "@styled-icons/remix-fill/Subtract";
-import { useState } from "react";
 import { useCartContext } from "../../contexts/CartContext";
 
 import { Wrapper, IconWrapper, Quantity } from "./styles";
 
 type IncrementorProps = {
   id: number;
-  quantity: number;
+  quantidadeItensCarrinho: number;
   quantidadeEstoque: number;
 };
 
-const Incrementor = ({ id, quantity, quantidadeEstoque }: IncrementorProps) => {
+const Incrementor = ({ id, quantidadeItensCarrinho, quantidadeEstoque }: IncrementorProps) => {
   const context = useCartContext()
-  const [quantidade, setQuantidade] = useState(quantity);
 
   const validarQuantidade = (tipoDaOperacao: string) => {
-    let novaQuantidade = quantidade;
+    let novaQuantidade = quantidadeItensCarrinho;
     if (tipoDaOperacao === "subtrair") {
-      if (quantidade > 0) {
-        novaQuantidade = quantidade - 1;
+      if (quantidadeItensCarrinho > 0) {
+        novaQuantidade = quantidadeItensCarrinho - 1;
       }
     }
     else if (tipoDaOperacao === "adicionar") {
-      if (quantidadeEstoque > quantidade) {
-        novaQuantidade = quantidade + 1;
+      if (quantidadeEstoque > quantidadeItensCarrinho) {
+        novaQuantidade = quantidadeItensCarrinho + 1;
       }
     }
-    setQuantidade(novaQuantidade);
-
     context.atualizarCarrinho(id, novaQuantidade);
 
-    // const produtos = context.produtos;
-    // const produto = produtos.filter(item => item.id === id)[0]
-    // produto.quantity = novaQuantidade;
-    // context.setProdutos(produtos)
   };
 
   return (
@@ -43,7 +35,7 @@ const Incrementor = ({ id, quantity, quantidadeEstoque }: IncrementorProps) => {
         <SubtractIcon aria-label="Subtract item" />
       </IconWrapper>
 
-      <Quantity>{quantidade}</Quantity>
+      <Quantity>{quantidadeItensCarrinho}</Quantity>
 
       <IconWrapper onClick={() => validarQuantidade("adicionar")}>
         <PlusIcon aria-label="Add item" />
